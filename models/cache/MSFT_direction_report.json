@@ -1,0 +1,19 @@
+{
+  "model": {
+    "Accuracy": 0.4411764705882353,
+    "Precision": 0.5,
+    "Recall": 0.6052631578947368,
+    "F1": 0.5476190476190477
+  },
+  "naive_baseline": {
+    "Accuracy": 0.5588235294117647,
+    "Precision": 0.5588235294117647,
+    "Recall": 1.0,
+    "F1": 0.7169811320754716
+  },
+  "beats_baseline_f1": false,
+  "best_iteration": 21,
+  "n_train": 316,
+  "n_val": 68,
+  "n_test": 68
+}

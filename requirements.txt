@@ -1,0 +1,16 @@
+flask
+flask-cors
+yfinance
+vaderSentiment
+tensorflow
+numpy
+pandas
+scikit-learn
+shap
+requests
+pandas-ta
+python-dotenv
+xgboost
+joblib
+openai
+pytest

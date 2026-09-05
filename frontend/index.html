@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SmartInvestAI — Trend Prediction</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="masthead">
+  <div class="masthead-inner">
+    <div class="wordmark">
+      <span class="wordmark-title">SmartInvestAI</span>
+      <span class="wordmark-sub">AI-driven trend prediction, benchmarked honestly</span>
+    </div>
+    <form id="ticker-form" class="ticker-form">
+      <label for="ticker-input" class="visually-hidden">Ticker symbol</label>
+      <input id="ticker-input" type="text" value="AAPL" autocomplete="off" spellcheck="false" placeholder="AAPL, TCS.NS, MSFT…" />
+      <button type="submit" id="analyze-btn">Analyze</button>
+    </form>
+  </div>
+</header>
+
+<main class="content">
+
+  <!-- Hero: the prediction, paired with its baseline comparison -->
+  <section class="hero" id="hero-section">
+    <div class="hero-main">
+      <div class="hero-label">Next-day prediction <span id="hero-companyname" class="hero-companyname"></span></div>
+      <div class="hero-figure">
+        <span id="hero-price">—</span>
+        <span id="hero-delta" class="hero-delta"></span>
+      </div>
+      <div class="hero-sub">
+        Last close <span id="hero-lastclose" class="mono">—</span>
+      </div>
+    </div>
+    <div class="hero-baseline">
+      <div class="hero-baseline-label">Benchmarked against a naive baseline</div>
+      <p id="hero-baseline-text" class="hero-baseline-text">
+        Load a ticker to see how this model's backtested error compares to simply predicting "no change."
+      </p>
+    </div>
+  </section>
+
+  <div class="loading-note" id="loading-note" hidden>
+    Training this ticker's models can take a minute or two on first request — cached after that.
+  </div>
+  <div class="error-note" id="error-note" hidden></div>
+
+  <!-- 5-day forecast -->
+  <section class="panel">
+    <h2 class="panel-title">5-day forecast</h2>
+    <p class="panel-caption">Each day predicted directly from the same input window — not chained from the day before, so one bad guess can't drag down the rest.</p>
+    <div class="chart-wrap">
+      <canvas id="forecast-chart" height="90"></canvas>
+    </div>
+  </section>
+
+  <!-- Explainability -->
+  <section class="panel">
+    <h2 class="panel-title">Why this direction</h2>
+    <p class="panel-caption">SHAP contributions from the direction model's real features — not raw price timesteps.</p>
+    <div class="explain-summary" id="explain-summary"></div>
+    <ul class="factor-list" id="factor-list"></ul>
+  </section>
+
+  <!-- Sentiment -->
+  <section class="panel panel-inline">
+    <div>
+      <h2 class="panel-title">News sentiment</h2>
+      <p class="panel-caption">VADER score over recent headlines (NewsAPI, ~30-day window).</p>
+    </div>
+    <div class="sentiment-readout" id="sentiment-readout">—</div>
+  </section>
+
+  <!-- Model transparency -->
+  <section class="panel">
+    <h2 class="panel-title">Model performance, backtested</h2>
+    <p class="panel-caption">Real numbers from a chronological train/val/test split, compared to the naive baseline every time this model is trained.</p>
+    <div class="metrics-grid" id="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-name">Direction (1-day)</div>
+        <div class="metric-value" id="metric-direction">—</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-name">Price (1-day)</div>
+        <div class="metric-value" id="metric-price">—</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Candlestick -->
+  <section class="panel">
+    <h2 class="panel-title">Price history</h2>
+    <p class="panel-caption">6-month daily OHLC, for context around the prediction above.</p>
+    <div id="candlestick-chart" class="candlestick-wrap"></div>
+  </section>
+
+  <!-- Agent chat -->
+  <section class="panel">
+    <h2 class="panel-title">Ask the research assistant</h2>
+    <p class="panel-caption">An agent that calls the same tools above on your behalf, grounded in real model output — not general knowledge about stocks.</p>
+    <div class="chat-window" id="chat-window">
+      <div class="chat-empty" id="chat-empty">Try: "How does AAPL's prediction compare to its baseline?" or "What's driving IOC.NS's direction call?"</div>
+    </div>
+    <form id="chat-form" class="chat-form">
+      <label for="chat-input" class="visually-hidden">Message</label>
+      <input id="chat-input" type="text" autocomplete="off" placeholder="Ask about the currently loaded ticker…" />
+      <button type="submit" id="chat-send-btn">Send</button>
+    </form>
+  </section>
+
+  <footer class="site-footer">
+    <p>Predictions are backtested statistical estimates, not investment advice. Short-horizon price movement is close to a random walk — see the performance panel above for how this model actually compares to a naive guess.</p>
+  </footer>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.3.0/dist/chart.umd.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.0/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.0.9/dist/purify.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
