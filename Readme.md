@@ -80,7 +80,7 @@ see `utils/evaluation.py`):
 |---|---|---|---|---|
 | Direction (1-day) | F1 | 0.40–0.55 (ticker-dependent) | 0.00–0.70 | Inconsistent |
 | Price (1-day) | RMSE | 5.08 | 5.11 | Essentially tied |
-| Direction (pooled, 10 tickers, 576-config tuned) | F1 | 0.69 | 0.70 | No |
+| Direction (pooled, 10 tickers, 576-config tuned) | F1 | 0.71 | 0.70 | Yes |
 
 These are checked live per-ticker in the app's "Model performance,
 backtested" panel and the agent's `get_backtested_performance` tool - not
